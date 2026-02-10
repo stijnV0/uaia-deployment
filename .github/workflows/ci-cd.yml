@@ -52,3 +52,17 @@ jobs:
         name: templates_artifact
         path: ./templates/* 
         retention-days: 30
+# step 19
+  RG-Job:
+    runs-on: ubuntu-latest
+    needs: [Build-Job]
+    steps:
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Create Resource Group
+      uses: Azure/cli@v2
+      with:
+        inlineScript: 
+          az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE-LOCATION }}
